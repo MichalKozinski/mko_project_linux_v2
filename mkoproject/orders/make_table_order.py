@@ -22,6 +22,9 @@ ProductionLine INT,
 StartDate DATE,
 EndDate DATE,
 ManHoursAfterProduction FLOAT,
+ProjectManager INT,
+CONSTRAINT fk_ProjectManager
+    FOREIGN KEY (ProjectManager) REFERENCES employees(EmpID),
 Status VARCHAR(255)
 )
 '''
