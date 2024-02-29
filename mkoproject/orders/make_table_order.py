@@ -8,3 +8,24 @@ db_config = {
 }
 
 connection = mysql.connector.connect(**db_config)
+
+cursor = connection.cursor()
+query = '''
+CREATE TABLE orders(
+OrderID INT AUTO_INCREMENT PRIMARY KEY,
+OrderName VARCHAR(255),
+Offer VARCHAR(255),
+Client VARCHAR(255),
+Quantity INT,
+ManHoursOffer FLOAT,
+ProductionLine INT,
+StartDate DATE,
+EndDate DATE,
+ManHoursAfterProduction FLOAT,
+Status VARCHAR(255)
+)
+'''
+
+cursor.execute(query)
+cursor.close()
+connection.close()
