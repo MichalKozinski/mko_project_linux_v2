@@ -17,7 +17,7 @@ WorkplaceNumber INT,
 OrderName VARCHAR(255),
 PositionName VARCHAR(255),
 ElementNumber INT,
-Timestamp TIMESTAMP
+Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 '''
 
