@@ -1,1 +1,1 @@
-web: gunicorn --chdir API api:app
+web: gunicorn --chdir mkoproject/API api:app
