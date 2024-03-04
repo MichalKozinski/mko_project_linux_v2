@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 def get_db():
     if 'db' not in g:
-        url = os.get('JAWSDB_MARIA_URL')
+        url = os.getenv('JAWSDB_MARIA_URL')
         db_config = {
             'user': url.split(':')[1].lstrip('//'),
             'password': url.split(':')[2].split('@')[0],
@@ -52,7 +52,7 @@ def handle_scan():
     else:
         return 'Brak wymaganyh parametrów', 400
 
-
+@app.route('/test_db')
 def test_db():
     cursor = get_db()
     cursor.execute("SELECT * FROM employees LIMIT 5;")  
