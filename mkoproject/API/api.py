@@ -55,7 +55,7 @@ def handle_scan():
 @app.route('/test_db')
 def test_db():
     cursor = get_db()
-    cursor.execute("SELECT * FROM employees LIMIT 5;")  
+    cursor.execute("SELECT * FROM acitivities LIMIT 5;")  
     rows = cursor.fetchall()
     return jsonify(rows)
 
