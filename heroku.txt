@@ -1,3 +1,4 @@
 https://git.heroku.com/mkoproject.git
 https://mkoproject-824ad6ef9b77.herokuapp.com/
 JAWSDB_MARIA_URL: mysql://gagjxd2qh66bywiq:t0u2mazwyo55e827@iu51mf0q32fkhfpl.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/fgvomip29s41qom2
+mysql -h iu51mf0q32fkhfpl.cbetxkdyhwsb.us-east-1.rds.amazonaws.com -u gagjxd2qh66bywiq -pt0u2mazwyo55e827 fgvomip29s41qom2

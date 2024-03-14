@@ -38,6 +38,7 @@ def connection_close(exception):
 
 @app.route('/scan', methods=['GET'])
 def handle_scan():
+    # trzeba dodać sprawdzanie zalogowanie pracownika na stanowsko ID=line:workplace. Do logowania na dane stanowisko trzeba stworzyć osobny skrypt.
     code = request.args.get('Z')
     WorkplaceNumber = request.args.get('ID')
     if code and WorkplaceNumber:
