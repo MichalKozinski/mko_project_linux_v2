@@ -38,12 +38,13 @@ def connection_close(exception):
 
 @app.route('/scan', methods=['GET'])
 def handle_scan():
-    # trzeba dodać sprawdzanie zalogowanie pracownika na stanowsko ID=line:workplace. Do logowania na dane stanowisko trzeba stworzyć osobny skrypt.
+    # trzeba dodać sprawdzanie zalogowanie pracownika na stanowsko ID=workplacenum:skanernum. Do logowania warunki pracownika, np. jeżeli jest pracownik to skladnia kodu jest E:EmpID, w przeciwnym razie normalne skanownie elementu zlecanie. To sie odnosi do Z={code}. Jak jest E sprawdza czy dla danego workplacenum:scanernum jest jakiś pracownik--> błąd lub czy nie jest zalogowany ten sam --> wylogowanie (procedura jest taka, że ponowne zeskanowanie na danym stanowisku pracownika to wylogowanie czyli wyzerowanie CurrentScanerUser(1-5) w tabeli workplaces) else zapisanie w tym polu numeru pracownika
     code = request.args.get('Z')
-    WorkplaceNumber = request.args.get('ID')
+    WorkplaceScanerNumber = request.args.get('ID')
     if code and WorkplaceNumber:
         try:
             OrderName, PositionName, ElementNumber = code.split(':')
+            WorkplaceNumber, ScanerNumber = WorkplaceScanerNumber.split(':')
             cursor = get_db()
             cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName, PositionName, ElementNumber))
             g.db.commit()
