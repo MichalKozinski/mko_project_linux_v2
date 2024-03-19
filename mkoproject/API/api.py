@@ -37,6 +37,7 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
     cursor.execute(query, (WorkplaceNumber,))
     #g.db.commit()
     user = cursor.fetchone()
+    print(user)
     if user[0]==0:
         query = 'SELECT Title FROM employees WHERE EmpID=%s'
         cursor.execute(query, (EmpID,))
