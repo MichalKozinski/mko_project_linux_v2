@@ -38,7 +38,7 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
     #g.db.commit()
     user = cursor.fetchone()
     print(user)
-    if user[0]==0:
+    if user['CurrentScanerUser' + str(ScanerNumber)]==0:
         query = 'SELECT Title FROM employees WHERE EmpID=%s'
         cursor.execute(query, (EmpID,))
         #g.db.commit()
@@ -50,7 +50,7 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
             print('Pracownik zalogowany na stanowisku ' + str(WorkplaceNumber) + 'skaner numer ' + str(ScanerNumber))
         else:
             print('Brak zezwolenia na logowanie - pracownik nieprodukcjny')
-    elif user[0]==EmpID:
+    elif user['CurrentScanerUser' + str(ScanerNumber)]==EmpID:
         query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=0 WHERE WorkplaceID=%s'
         cursor.execute(query, (WorkplaceNumber,))
         g.db.commit()
