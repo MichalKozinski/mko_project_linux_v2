@@ -81,14 +81,15 @@ def handle_scan():
         try:
             OrderName_E, PositionName_EmpID, ElementNumber = code.split(':')
             WorkplaceNumber, ScanerNumber = WorkplaceScanerNumber.split(':')
+            message = ''
             if OrderName_E == 'E':
-                login_logout(PositionName_EmpID, WorkplaceNumber, ScanerNumber)
+                message = login_logout(PositionName_EmpID, WorkplaceNumber, ScanerNumber)
             else:
-                add_activity(OrderName_E, PositionName_EmpID, ElementNumber,WorkplaceNumber, ScanerNumber)
+                message = add_activity(OrderName_E, PositionName_EmpID, ElementNumber,WorkplaceNumber, ScanerNumber)
             # cursor = get_db()
             # cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName_E, PositionName_EmpID, ElementNumber))
             # g.db.commit()
-            #return 'Dane poprawnie dodane do bazy', 200
+            return message , 200
         except ValueError:
             return 'Nieprawidłowy format danych', 400
     else:
