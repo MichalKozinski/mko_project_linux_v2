@@ -55,9 +55,9 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
         query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=0 WHERE WorkplaceID=%s'
         cursor.execute(query, (WorkplaceNumber,))
         g.db.commit()
-        print('Pracownik wylogowany ze stanowiska ' + str(WorkplaceNumber) + 'skane numer' + str(ScanerNumber))
+        print('Pracownik wylogowany ze stanowiska ' + str(WorkplaceNumber) + 'skaner numer' + str(ScanerNumber))
     else:
-        print('Na tym stanowisku jest już zalogowany pracownik o numerze ' + str(user[0]))
+        print('Na tym stanowisku jest już zalogowany pracownik o numerze ' + str(user['CurrentScanerUser' + str(ScanerNumber)]))
 
 
 def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber):
