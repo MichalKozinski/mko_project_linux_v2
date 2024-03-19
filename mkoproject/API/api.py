@@ -57,7 +57,7 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
         print('Na tym stanowisku jest już zalogowany pracownik o numerze ' + user[0])
 
 
-def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber)
+def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber):
     
     return 'tu bedzie funkcja add activity'
     
