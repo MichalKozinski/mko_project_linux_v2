@@ -34,27 +34,27 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
     cursor = get_db()
     query = 'SELECT ' + 'CurrentScanerUser' + str(ScanerNumber) + ' FROM workplaces WHERE WorkplaceID=%s'
     cursor.execute(query, (WorkplaceNumber,))
-    g.db.commit()
+    #g.db.commit()
     user = cursor.fetchone()
     if user[0]==0:
         query = 'SELECT Title FROM employees WHERE EmpID=%s'
         cursor.execute(query, (EmpID,))
-        g.db.commit()
-        title = cursor.fetchall()
-        if title[0]=='Production' and title[1]=='Technician':
+        #g.db.commit()
+        title = cursor.fetchone()
+        if title and title[0].startswith('Production Technician'):
             query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=%s WHERE WorkplaceID=%s'
             cursor.execute(query, (EmpID, WorkplaceNumber,))
             g.db.commit()
-            print('Pracownik zalogowany na stanowisku ' + WorkplaceNumber + 'skaner numer ' + ScanerNumber)
+            print('Pracownik zalogowany na stanowisku ' + str(WorkplaceNumber) + 'skaner numer ' + str(ScanerNumber))
         else:
-            print('Brak zezwolenia na logowani - pracownik nieprodukcjny')
+            print('Brak zezwolenia na logowanie - pracownik nieprodukcjny')
     elif user[0]==EmpID:
         query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=0 WHERE WorkplaceID=%s'
         cursor.execute(query, (WorkplaceNumber,))
         g.db.commit()
-        print('Pracownik wylogowany ze stanowiska ' + WorkplaceNumber + 'skane numer' + ScanerNumber)
+        print('Pracownik wylogowany ze stanowiska ' + str(WorkplaceNumber) + 'skane numer' + str(ScanerNumber))
     else:
-        print('Na tym stanowisku jest już zalogowany pracownik o numerze ' + user[0])
+        print('Na tym stanowisku jest już zalogowany pracownik o numerze ' + str(user[0]))
 
 
 def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber):
