@@ -43,6 +43,7 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
         cursor.execute(query, (EmpID,))
         #g.db.commit()
         title = cursor.fetchone()
+        print(title)
         if title and title[0].startswith('Production Technician'):
             query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=%s WHERE WorkplaceID=%s'
             cursor.execute(query, (EmpID, WorkplaceNumber,))
