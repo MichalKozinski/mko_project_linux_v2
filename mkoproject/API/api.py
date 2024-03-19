@@ -30,6 +30,38 @@ def get_db():
     return g.cursor
 
 
+def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
+    cursor = get_db()
+    query = 'SELECT ' + 'CurrentScanerUser' + str(ScanerNumber) + ' FROM workplaces WHERE WorkplaceID=%s'
+    cursor.execute(query, (WorkplaceNumber,))
+    g.db.commit()
+    user = cursor.fetchone()
+    if user[0]==0:
+        query = 'SELECT Title FROM employees WHERE EmpID=%s'
+        cursor.execute(query, (EmpID,))
+        g.db.commit()
+        title = cursor.fetchall()
+        if title[0]=='Production' and title[1]=='Technician':
+            query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=%s WHERE WorkplaceID=%s'
+            cursor.execute(query, (EmpID, WorkplaceNumber,))
+            g.db.commit()
+            print('Pracownik zalogowany na stanowisku ' + WorkplaceNumber + 'skaner numer ' + ScanerNumber)
+        else:
+            print('Brak zezwolenia na logowani - pracownik nieprodukcjny')
+    elif user[0]==EmpID:
+        query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=0 WHERE WorkplaceID=%s'
+        cursor.execute(query, (WorkplaceNumber,))
+        g.db.commit()
+        print('Pracownik wylogowany ze stanowiska ' + WorkplaceNumber + 'skane numer' + ScanerNumber)
+    else:
+        print('Na tym stanowisku jest już zalogowany pracownik o numerze ' + user[0])
+
+
+def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber)
+    
+    return 'tu bedzie funkcja add activity'
+    
+
 @app.teardown_appcontext
 def connection_close(exception):
     db = g.pop('db', None)
@@ -43,11 +75,15 @@ def handle_scan():
     WorkplaceScanerNumber = request.args.get('ID')
     if code and WorkplaceNumber:
         try:
-            OrderName, PositionName, ElementNumber = code.split(':')
+            OrderName_E, PositionName_EmpID, ElementNumber = code.split(':')
             WorkplaceNumber, ScanerNumber = WorkplaceScanerNumber.split(':')
-            cursor = get_db()
-            cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName, PositionName, ElementNumber))
-            g.db.commit()
+            if OrderName_E == 'E':
+                login_logout(PositionName_EmpID, WorkplaceNumber, ScanerNumber)
+            else:
+                add_activity(OrderName_E, PositionName_EmpID, ElementNumber,WorkplaceNumber, ScanerNumber)
+            # cursor = get_db()
+            # cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName_E, PositionName_EmpID, ElementNumber))
+            # g.db.commit()
             return 'Dane poprawnie dodane do bazy', 200
         except ValueError:
             return 'Nieprawidłowy format danych', 400
