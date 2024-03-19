@@ -33,6 +33,7 @@ def get_db():
 def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
     cursor = get_db()
     query = 'SELECT ' + 'CurrentScanerUser' + str(ScanerNumber) + ' FROM workplaces WHERE WorkplaceID=%s'
+    print(query)
     cursor.execute(query, (WorkplaceNumber,))
     #g.db.commit()
     user = cursor.fetchone()
