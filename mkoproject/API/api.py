@@ -88,7 +88,7 @@ def handle_scan():
             # cursor = get_db()
             # cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName_E, PositionName_EmpID, ElementNumber))
             # g.db.commit()
-            return 'Dane poprawnie dodane do bazy', 200
+            #return 'Dane poprawnie dodane do bazy', 200
         except ValueError:
             return 'Nieprawidłowy format danych', 400
     else:
