@@ -52,7 +52,7 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
             print('Pracownik zalogowany na stanowisku ' + str(WorkplaceNumber) + 'skaner numer ' + str(ScanerNumber))
         else:
             print('Brak zezwolenia na logowanie - pracownik nieprodukcjny')
-    elif user['CurrentScanerUser' + str(ScanerNumber)]==EmpID:
+    elif user['CurrentScanerUser' + str(ScanerNumber)]==int(EmpID):
         query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=0 WHERE WorkplaceID=%s'
         cursor.execute(query, (WorkplaceNumber,))
         g.db.commit()
