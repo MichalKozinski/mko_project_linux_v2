@@ -49,20 +49,20 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
             query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=%s WHERE WorkplaceID=%s'
             cursor.execute(query, (EmpID, WorkplaceNumber,))
             g.db.commit()
-            return 'Pracownik zalogowany na stanowisku ' + str(WorkplaceNumber) + 'skaner numer ' + str(ScanerNumber)
+            return 'Pracownik zalogowany na stanowisku ' + str(WorkplaceNumber) + ' skaner numer ' + str(ScanerNumber)
         else:
             return 'Brak zezwolenia na logowanie - pracownik nieprodukcjny'
     elif user['CurrentScanerUser' + str(ScanerNumber)]==int(EmpID):
         query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=0 WHERE WorkplaceID=%s'
         cursor.execute(query, (WorkplaceNumber,))
         g.db.commit()
-        return 'Pracownik wylogowany ze stanowiska ' + str(WorkplaceNumber) + 'skaner numer' + str(ScanerNumber)
+        return 'Pracownik wylogowany ze stanowiska ' + str(WorkplaceNumber) + ' skaner numer ' + str(ScanerNumber)
     else:
         return 'Na tym stanowisku jest już zalogowany pracownik o numerze ' + str(user['CurrentScanerUser' + str(ScanerNumber)])
 
 
 def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber):
-    
+    #funkcja sprawdza najpierw czy ktoś jest zalogowany na stanowisku WorkplaceNumber:ScanerNumber i jeżeli tak to pobiera numer tego pracownika. Jeżeli nie podaje komunikat, że najpierw musisz się zalogować. Następnie dodaje dane aktywności jeżeli pracownik jest zalogowany. Dane analizowane są z tabeli activities w taki sposób, że pierwsze aktywność to start a drugie to zakończenie danej czynności. W przypadku wykonywania programu CNC zakładamy 3 wpisy, wczytanie programu, rozpoczęcie obróbki, zakończenie obróbki 
     return 'tu bedzie funkcja add activity'
     
 
