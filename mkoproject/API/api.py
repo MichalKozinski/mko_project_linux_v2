@@ -89,8 +89,7 @@ def handle_scan():
             message = ''
             if OrderName_E == 'E':
                 message = login_logout(PositionName_EmpID, WorkplaceNumber, ScanerNumber)
-                #
-                connection_close()
+                #connection_close()
             else:
                 message = add_activity(OrderName_E, PositionName_EmpID, ElementNumber,WorkplaceNumber, ScanerNumber)
                 #connection_close()
