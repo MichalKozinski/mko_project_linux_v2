@@ -33,18 +33,14 @@ def get_db():
 def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
     cursor = get_db()
     query = 'SELECT ' + 'CurrentScanerUser' + str(ScanerNumber) + ' FROM workplaces WHERE WorkplaceID=%s'
-    print(query)
     cursor.execute(query, (WorkplaceNumber,))
     #g.db.commit()
     user = cursor.fetchone()
-    print(user)
-    print(EmpID)
     if user['CurrentScanerUser' + str(ScanerNumber)]==0:
         query = 'SELECT Title FROM employees WHERE EmpID=%s'
         cursor.execute(query, (EmpID,))
         #g.db.commit()
         title = cursor.fetchone()
-        print(title)
         if title and title['Title'].startswith('Production Technician'):
             query = 'UPDATE workplaces SET ' + 'CurrentScanerUser' + str(ScanerNumber) + '=%s WHERE WorkplaceID=%s'
             cursor.execute(query, (EmpID, WorkplaceNumber,))
@@ -63,7 +59,16 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
 
 def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber):
     #funkcja sprawdza najpierw czy ktoś jest zalogowany na stanowisku WorkplaceNumber:ScanerNumber i jeżeli tak to pobiera numer tego pracownika. Jeżeli nie podaje komunikat, że najpierw musisz się zalogować. Następnie dodaje dane aktywności jeżeli pracownik jest zalogowany. Dane analizowane są z tabeli activities w taki sposób, że pierwsze aktywność to start a drugie to zakończenie danej czynności. W przypadku wykonywania programu CNC zakładamy 3 wpisy, wczytanie programu, rozpoczęcie obróbki, zakończenie obróbki 
-    return 'tu bedzie funkcja add activity'
+    cursor = get_db()
+    query = 'SELECT ' + 'CurrentScanerUser' + str(ScanerNumber) + ' FROM workplaces WHERE WorkplaceID=%s'
+    cursor.execute(query, (WorkplaceNumber,))
+    user = cursor.fetchone()
+    if user['CurrentScanerUser' + str(ScanerNumber)]==0:
+        return 'Aby dodać aktywność musisz zalogować się do skanera. Zesknuj swój kod pracownika abyt to zrobić' 
+    else:
+        query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
+        cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
+        g.db.commit()
     
 
 @app.teardown_appcontext
@@ -76,9 +81,7 @@ def connection_close(exception):
 def handle_scan():
     # trzeba dodać sprawdzanie zalogowanie pracownika na stanowsko ID=workplacenum:skanernum. Do logowania warunki pracownika, np. jeżeli jest pracownik to skladnia kodu jest E:EmpID, w przeciwnym razie normalne skanownie elementu zlecanie. To sie odnosi do Z={code}. Jak jest E sprawdza czy dla danego workplacenum:scanernum jest jakiś pracownik--> błąd lub czy nie jest zalogowany ten sam --> wylogowanie (procedura jest taka, że ponowne zeskanowanie na danym stanowisku pracownika to wylogowanie czyli wyzerowanie CurrentScanerUser(1-5) w tabeli workplaces) else zapisanie w tym polu numeru pracownika
     code = request.args.get('Z')
-    print(code)
     WorkplaceScanerNumber = request.args.get('ID')
-    print(WorkplaceScanerNumber)
     if code and WorkplaceScanerNumber:
         try:
             OrderName_E, PositionName_EmpID, ElementNumber = code.split(':')
@@ -86,8 +89,10 @@ def handle_scan():
             message = ''
             if OrderName_E == 'E':
                 message = login_logout(PositionName_EmpID, WorkplaceNumber, ScanerNumber)
+                connection_close()
             else:
                 message = add_activity(OrderName_E, PositionName_EmpID, ElementNumber,WorkplaceNumber, ScanerNumber)
+                connection_close()
             # cursor = get_db()
             # cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName_E, PositionName_EmpID, ElementNumber))
             # g.db.commit()
