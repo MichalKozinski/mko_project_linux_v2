@@ -69,6 +69,7 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
         query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
         cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
         g.db.commit()
+        return 'Dodałeś aktywność do bazy'
     
 
 @app.teardown_appcontext
