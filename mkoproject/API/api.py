@@ -76,7 +76,9 @@ def connection_close(exception):
 def handle_scan():
     # trzeba dodać sprawdzanie zalogowanie pracownika na stanowsko ID=workplacenum:skanernum. Do logowania warunki pracownika, np. jeżeli jest pracownik to skladnia kodu jest E:EmpID, w przeciwnym razie normalne skanownie elementu zlecanie. To sie odnosi do Z={code}. Jak jest E sprawdza czy dla danego workplacenum:scanernum jest jakiś pracownik--> błąd lub czy nie jest zalogowany ten sam --> wylogowanie (procedura jest taka, że ponowne zeskanowanie na danym stanowisku pracownika to wylogowanie czyli wyzerowanie CurrentScanerUser(1-5) w tabeli workplaces) else zapisanie w tym polu numeru pracownika
     code = request.args.get('Z')
+    print(code)
     WorkplaceScanerNumber = request.args.get('ID')
+    print(WorkplaceScanerNumber)
     if code and WorkplaceScanerNumber:
         try:
             OrderName_E, PositionName_EmpID, ElementNumber = code.split(':')
