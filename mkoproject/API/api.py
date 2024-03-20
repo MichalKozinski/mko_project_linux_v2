@@ -89,10 +89,11 @@ def handle_scan():
             message = ''
             if OrderName_E == 'E':
                 message = login_logout(PositionName_EmpID, WorkplaceNumber, ScanerNumber)
+                #
                 connection_close()
             else:
                 message = add_activity(OrderName_E, PositionName_EmpID, ElementNumber,WorkplaceNumber, ScanerNumber)
-                connection_close()
+                #connection_close()
             # cursor = get_db()
             # cursor.execute(''' INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber ) VALUES (%s, %s, %s, %s)''', (WorkplaceNumber ,OrderName_E, PositionName_EmpID, ElementNumber))
             # g.db.commit()
