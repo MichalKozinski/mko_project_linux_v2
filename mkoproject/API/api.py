@@ -59,12 +59,9 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
 
 def can_add_activity(existing_activities, new_activity):
     match = 0
-    print(existing_activities)
-    print(new_activity)
     for activity in existing_activities:
         if (activity['OrderName']==new_activity['OrderName'] and activity['PositionName']==new_activity['PositionName'] and activity['ElementNumber']==new_activity['ElementNumber'] and activity['WorkplaceNumber']==new_activity['WorkplaceNumber']):
             match += 1
-    print(match)
     return match<2
 
 
@@ -90,6 +87,8 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
             cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
             g.db.commit()
             return 'Dodałeś aktywność do bazy'
+        else:
+            return 'Nie możesz dodać kolejnej aktywności dla tego elementu - praca nad tym elementem na tym stanowisku się zakończyła'
 
 
 @app.teardown_appcontext
