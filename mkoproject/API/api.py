@@ -83,11 +83,12 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
         }
         cursor.execute("SELECT * FROM activities")  
         existing_activities = cursor.fetchall()
-        if (can_add_activity(existing_activities, new_activity)<3):
+        can_add = can_add_activity(existing_activities, new_activity)
+        if (can_add<3):
             query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
             cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
             g.db.commit()
-            return comments[can_add_activity]
+            return comments[can_add]
         else:
             return 'Nie możesz dodać kolejnej aktywności dla tego elementu - praca nad tym elementem na tym stanowisku się zakończyła'
 
