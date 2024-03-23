@@ -85,11 +85,11 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
         }
         cursor.execute("SELECT * FROM activities")  
         existing_activities = cursor.fetchall()
-        print(can_add_activity(existing_activities, new_activity))
-            # query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
-            # cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
-            # g.db.commit()
-            # return 'Dodałeś aktywność do bazy'
+        if (can_add_activity(existing_activities, new_activity)):
+            query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
+            cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
+            g.db.commit()
+            return 'Dodałeś aktywność do bazy'
 
 
 @app.teardown_appcontext
