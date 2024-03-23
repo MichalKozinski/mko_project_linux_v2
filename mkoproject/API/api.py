@@ -66,17 +66,36 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
     if user['CurrentScanerUser' + str(ScanerNumber)]==0:
         return 'Aby dodać aktywność musisz zalogować się do skanera. Zesknuj swój kod pracownika abyt to zrobić' 
     else:
-        query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
-        cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
-        g.db.commit()
-        return 'Dodałeś aktywność do bazy'
-    
+        new_activity = {
+            'WorkplaceNumber' = WorkplaceNumber
+            'OrderName' = OrderName
+            'PositionName' = PositionName
+            'ElementNumber' =  ElementNumber
+        }
+        cursor.execute("SELECT * FROM activities")  
+        existing_activities = cursor.fetchall()
+        if can_add_activity(existing_activities, new_activity):
+            query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
+            cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
+            g.db.commit()
+            return 'Dodałeś aktywność do bazy'
+
+
+ def can_add_activity(existing_activities, new_activity):
+    match = 0
+    for activity in existing_activities:
+        if (activity['OrderName']==new_activity['OrderName'] and activity['PositionName']==new_activity['PositionName'] and activity['ElementNumber']==new_activity['ElementNumber'] and activity['WorkplaceNumber']==new_activity['WorkplaceNumber']):
+            match += 1
+    return match<2
+
+
 
 @app.teardown_appcontext
 def connection_close(exception):
     db = g.pop('db', None)
     if db is not None:
         db.close()
+
 
 @app.route('/scan', methods=['GET'])
 def handle_scan():
