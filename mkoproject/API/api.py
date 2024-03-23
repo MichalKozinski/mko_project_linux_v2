@@ -59,6 +59,8 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
 
 def can_add_activity(existing_activities, new_activity):
     match = 0
+    print(existing_activities)
+    print(new_activity)
     for activity in existing_activities:
         if (activity['OrderName']==new_activity['OrderName'] and activity['PositionName']==new_activity['PositionName'] and activity['ElementNumber']==new_activity['ElementNumber'] and activity['WorkplaceNumber']==new_activity['WorkplaceNumber']):
             match += 1
