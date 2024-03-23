@@ -67,10 +67,10 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
         return 'Aby dodać aktywność musisz zalogować się do skanera. Zesknuj swój kod pracownika abyt to zrobić' 
     else:
         new_activity = {
-            'WorkplaceNumber' = WorkplaceNumber
-            'OrderName' = OrderName
-            'PositionName' = PositionName
-            'ElementNumber' =  ElementNumber
+            'WorkplaceNumber' : WorkplaceNumber,
+            'OrderName' : OrderName,
+            'PositionName' : PositionName,
+            'ElementNumber' :  ElementNumber
         }
         cursor.execute("SELECT * FROM activities")  
         existing_activities = cursor.fetchall()
