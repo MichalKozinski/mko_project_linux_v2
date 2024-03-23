@@ -57,6 +57,14 @@ def login_logout(EmpID, WorkplaceNumber, ScanerNumber):
         return 'Na tym stanowisku jest już zalogowany pracownik o numerze ' + str(user['CurrentScanerUser' + str(ScanerNumber)])
 
 
+def can_add_activity(existing_activities, new_activity):
+    match = 0
+    for activity in existing_activities:
+        if (activity['OrderName']==new_activity['OrderName'] and activity['PositionName']==new_activity['PositionName'] and activity['ElementNumber']==new_activity['ElementNumber'] and activity['WorkplaceNumber']==new_activity['WorkplaceNumber']):
+            match += 1
+    return match<2
+
+
 def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, ScanerNumber):
     #funkcja sprawdza najpierw czy ktoś jest zalogowany na stanowisku WorkplaceNumber:ScanerNumber i jeżeli tak to pobiera numer tego pracownika. Jeżeli nie podaje komunikat, że najpierw musisz się zalogować. Następnie dodaje dane aktywności jeżeli pracownik jest zalogowany. Dane analizowane są z tabeli activities w taki sposób, że pierwsze aktywność to start a drugie to zakończenie danej czynności. W przypadku wykonywania programu CNC zakładamy 3 wpisy, wczytanie programu, rozpoczęcie obróbki, zakończenie obróbki 
     cursor = get_db()
@@ -79,15 +87,6 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
             cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
             g.db.commit()
             return 'Dodałeś aktywność do bazy'
-
-
- def can_add_activity(existing_activities, new_activity):
-    match = 0
-    for activity in existing_activities:
-        if (activity['OrderName']==new_activity['OrderName'] and activity['PositionName']==new_activity['PositionName'] and activity['ElementNumber']==new_activity['ElementNumber'] and activity['WorkplaceNumber']==new_activity['WorkplaceNumber']):
-            match += 1
-    return match<2
-
 
 
 @app.teardown_appcontext
