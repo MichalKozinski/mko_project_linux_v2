@@ -84,7 +84,7 @@ def add_activity(OrderName, PositionName, ElementNumber, WorkplaceNumber, Scaner
         cursor.execute("SELECT * FROM activities")  
         existing_activities = cursor.fetchall()
         can_add = can_add_activity(existing_activities, new_activity)
-        if (can_add<3):
+        if (can_add<2):
             query = 'INSERT INTO activities (WorkplaceNumber ,OrderName, PositionName, ElementNumber, EmpID ) VALUES (%s, %s, %s, %s, %s)'
             cursor.execute(query, (WorkplaceNumber ,OrderName, PositionName, ElementNumber, user['CurrentScanerUser' + str(ScanerNumber)], ))
             g.db.commit()
