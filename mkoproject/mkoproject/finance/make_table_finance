@@ -1,0 +1,29 @@
+import mysql.connector
+
+db_config = {
+    'host' : 'localhost',
+    'user' : 'root',
+    'password' : 'knf2291',
+    'database' : 'mkoproject'
+}
+
+connection = mysql.connector.connect(**db_config)
+
+cursor = connection.cursor()
+query = '''
+CREATE TABLE finance(
+OrderID INT PRIMARY KEY,
+FOREIGN KEY (OrderID) REFERENCES orders(OrderID),
+OrderValue FLOAT,
+MaterialValue FLOAT,
+ManhoursAfterProduction FLOAT,
+Costs FLOAT,
+Profit FLOAT,
+Profitability FLOAT,
+ManHourValue FLOAT
+)
+'''
+
+cursor.execute(query)
+cursor.close()
+connection.close()

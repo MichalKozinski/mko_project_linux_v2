@@ -1,0 +1,19 @@
+dwie tabele do zrobienia:
+1) lines (tutaj będzie spis linii, oraz przypisanie narazie ręczne ile w danym tygodniu jest dostępnych roboczogodzin - później to będzie użyte przy porównaniu ile było rzeczywiście zrobione):
+    LineID
+    Week
+    AvailableManHours
+    RealManHours (can be null - fill after week automatically)
+2) workplaces (tutaj będzie przypisanie stanowiska do linii oraz będą wpisane ,po zeskanowniu przez pracownika skanerem dla stanowiska swojego ID, id pracowników pracujących na tym stanowiku)
+    To musi zrobić przed rozpoczęciem aktywności na stanowisku (tutaj może być obsługa błędu skanowania etykietu elementu i sprawdzenie czy dany pracownik jest przypisany w danym momencie do jakiekolwiek stanowiska - jak nie błąd)
+    Następnie, po wpisaniu pracownika do stanowiska będą skanowane aktywności, podczas skanowania aktywności musi nastąpić przepisanie Id pracownika do tabeli aktywnosci ale tutaj pojawia się problem rozróżnienia kto zeskanował.
+    Może do stanowiska powinno być przypisane więcej skanerów (jeden skaner - jeden pracownik). To musi być zrobione tak, że ID skanera ma budowę WorkplaceID:WorkplaceScanerNum np stanowisko 1 skaner 1 -->ID=1:1 (tak musi być przesłane w do GET)
+    Wtedy program rozpozna gdzie ma umieścić dany EmpID i podczas skanowania aktywności stąd będzie pobierane EmpID do aktywności
+
+    WorkplaceID
+    LineID --FK LineID
+    CurrentScanerUser1 - FK EmpID 
+    CurrentScanerUser2 - FK EmpID
+    CurrentScanerUser3 - FK EmpID
+    CurrentScanerUser4 - FK EmpID
+    CurrentScanerUser5 - FK EmpID
