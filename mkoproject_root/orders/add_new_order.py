@@ -2,6 +2,7 @@ from pyspark.sql.functions import udf, col
 from pyspark.sql.types import IntegerType
 from datetime import datetime, timedelta
 from dateutil.easter import easter
+from pyspark.sql import SparkSession
 
 def work_days(start_date, end_date, include_start=True):
     current_year = datetime.now().year
